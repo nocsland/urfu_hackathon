@@ -1,0 +1,14 @@
+spacy
+joblib
+torch
+numpy
+tqdm
+transformers
+bs4
+faiss-cpu
+dvc
+dvc-gdrive
+sentencepiece
+unstructured
+langchain-community
+langchain
