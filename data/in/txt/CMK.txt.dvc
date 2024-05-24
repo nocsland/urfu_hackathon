@@ -1,0 +1,5 @@
+outs:
+- md5: 17e56e60e9cd1b52a1606b3c6e2175b5
+  size: 19783
+  hash: md5
+  path: CMK.txt

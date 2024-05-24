@@ -1,0 +1,6 @@
+outs:
+- md5: 7d8ff80c13903c7701a7f8b7692c50fa.dir
+  size: 84063222
+  nfiles: 833
+  hash: md5
+  path: html
