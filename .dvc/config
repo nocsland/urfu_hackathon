@@ -1,0 +1,4 @@
+[core]
+    remote = hackathon
+['remote "hackathon"']
+    url = gdrive://1sV6izvVNyUB9IhOM8s83p2vol62stnMi
