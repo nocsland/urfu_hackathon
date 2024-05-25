@@ -4,14 +4,13 @@ import warnings
 import re
 
 import spacy
-from joblib import Memory
 from langchain_community.document_loaders import DirectoryLoader
 
 # Отключаем все предупреждения
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 # Загружаем исходные данные
-loader = DirectoryLoader("../data/in/html")
+loader = DirectoryLoader('../data/in/html')
 docs = loader.load()
 
 # Очищаем исходный текст
