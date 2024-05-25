@@ -1,4 +1,4 @@
-
+import json
 import pickle
 import warnings
 import re
@@ -28,5 +28,12 @@ for item in docs:
     item.page_content = cleaned_text
 
 # Запись списка объектов в файл
-with open('../data/in/pkl/documents.pkl', 'wb') as file:
+with open('../data/in/pkl/cleared_documents.pkl', 'wb') as file:
     pickle.dump(docs, file)
+
+# Преобразование объектов в словари для сохранения в JSON
+docs_dicts = [item.__dict__ for item in docs]
+
+# Запись списка словарей в файл JSON
+with open('../data/out/json/cleared_documents.json', 'w', encoding='utf-8') as file:
+    json.dump(docs_dicts, file, ensure_ascii=False, indent=4)
