@@ -11,7 +11,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Отключаем все предупреждения
 warnings.filterwarnings("ignore")
 
-with open('../data/in/pkl/documents.pkl', 'rb') as file:
+with open('../data/in/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
 
 # Разделяем на чанки
