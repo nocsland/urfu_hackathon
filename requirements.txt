@@ -12,3 +12,4 @@ sentencepiece
 unstructured
 langchain-community
 langchain
+sentence-transformers

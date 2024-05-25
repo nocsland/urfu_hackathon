@@ -11,7 +11,7 @@ from langchain_community.document_loaders import DirectoryLoader
 warnings.filterwarnings("ignore")
 
 # Загружаем исходные данные
-loader = DirectoryLoader("../data/source_text/test")
+loader = DirectoryLoader("../data/in/html")
 docs = loader.load()
 
 # Очищаем исходный текст
@@ -28,5 +28,5 @@ for item in docs:
     item.page_content = cleaned_text
 
 # Запись списка объектов в файл
-with open('../data/out/pkl/documents.pkl', 'wb') as file:
+with open('../data/in/pkl/documents.pkl', 'wb') as file:
     pickle.dump(docs, file)
