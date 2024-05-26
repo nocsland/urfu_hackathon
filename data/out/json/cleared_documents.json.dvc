@@ -1,0 +1,5 @@
+outs:
+- md5: c54fe0078ab76a1dae1f3d3fe880192f
+  size: 15999422
+  hash: md5
+  path: cleared_documents.json
