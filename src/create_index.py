@@ -1,6 +1,5 @@
 # Чтение списка объектов из файла
 import pickle
-import re
 import warnings
 
 from joblib import Memory
@@ -23,7 +22,7 @@ model_id = 'sentence-transformers/all-MiniLM-L6-v2'
 model_kwargs = {'device': 'cpu'}
 embeddings = HuggingFaceEmbeddings(
     model_name=model_id,
-    model_kwargs=model_kwargs,
+    model_kwargs=model_kwargs
 )
 
 # Кэширование
@@ -31,22 +30,14 @@ cache_dir = '../cache'
 memory = Memory(cache_dir)
 
 
-# Создаем функцию записи в базу данных FAISS
+# Функция по созданию индекса FAISS
 @memory.cache
-def get_db(source_chunks, embeddings):
+def get_db():
     return FAISS.from_documents(source_chunks, embeddings)
 
 
-# Записываем вектора
-db = get_db(source_chunks, embeddings)
+# Сохраняем индекс в переменную
+db = get_db()
 
-# Сохраняем индекс
+# Сохраняем индекс в файл
 db.save_local('../data/faiss_index')
-
-topic = '"Какие документы необходимы"'
-docs = db.similarity_search(topic, k=3)
-message_content = re.sub(r'\n{2}', ' ', '\n '.join(
-    [f'\n#### Релевантный фрагмент {i + 1} ####\n' + str(doc.metadata) + '\n' + doc.page_content + '\n' for i, doc in
-     enumerate(docs)]
-))
-print(message_content)
