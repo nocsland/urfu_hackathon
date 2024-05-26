@@ -8,7 +8,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Отключаем все предупреждения
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 with open('../data/in/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
@@ -30,14 +30,14 @@ cache_dir = '../cache'
 memory = Memory(cache_dir)
 
 
-# Создаем функцию записи в базу данных FAISS
+# Функция по созданию индекса FAISS
 @memory.cache
 def get_db():
     return FAISS.from_documents(source_chunks, embeddings)
 
 
-# Записываем индекс переменную
+# Сохраняем индекс в переменную
 db = get_db()
 
-# Сохраняем индекс
+# Сохраняем индекс в файл
 db.save_local('../data/faiss_index')
