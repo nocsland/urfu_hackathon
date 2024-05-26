@@ -20,10 +20,10 @@ for item in docs:
     tokens = [
         str(token)  # .lemma_
         for token in doc
-        if not token.is_stop and not token.is_punct and not token.is_space]
+        if not token.is_space]
     cleaned_text = ' '.join(tokens).strip()
-    cleaned_text = re.sub(r'меток Обзор|Постоянная ссылка|Инструменты контента.*$', '', cleaned_text)
-    cleaned_text = re.sub(r'^.*Переход началу метаданных', '', cleaned_text)
+    cleaned_text = re.sub(r'Нет меток Обзор.*$', '', cleaned_text)
+    cleaned_text = re.sub(r'^.*Переход к началу метаданных', '', cleaned_text)
     item.page_content = cleaned_text
 
 # Запись списка объектов в файл
