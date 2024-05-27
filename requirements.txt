@@ -13,3 +13,4 @@ unstructured
 langchain-community
 langchain
 sentence-transformers
+llama-cpp-python
