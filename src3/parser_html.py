@@ -1,7 +1,7 @@
-import json
 import pickle
-import re
+import json
 import warnings
+import re
 
 import spacy
 from langchain_community.document_loaders import DirectoryLoader
@@ -22,7 +22,7 @@ for item in docs:
         for token in doc
         if not token.is_space]
     cleaned_text = ' '.join(tokens).strip()
-    cleaned_text = re.sub(r'Нет меток Обзор|Обзор Инструменты|Написать комментарий .*$', '', cleaned_text)
+    cleaned_text = re.sub(r'Нет меток Обзор.*$', '', cleaned_text)
     cleaned_text = re.sub(r'^.*Переход к началу метаданных', '', cleaned_text)
     item.page_content = cleaned_text
 
