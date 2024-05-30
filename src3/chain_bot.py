@@ -46,17 +46,19 @@ llm = LlamaCpp(
     temperature=0.1,  # Температура для управления степенью случайности в ответах
     max_tokens=2000,  # Максимальное количество токенов в ответе
     max_length=512,  # Максимальная длина текста (в символах)
-    top_p=0.95,  # Параметр для управления вероятностным выбором токенов
-    # callback_manager=callback_manager,  # Менеджер коллбэков    f16_kv=True,
+    top_p=0.95,
+    top_k=50,
+    # callback_manager=callback_manager,  # Менеджер коллбэков
+    f16_kv=True,
     n_batch=512,
     verbose=False,  # Отключение подробного вывода
-    n_ctx=4096,
     do_sample=True,
     repetition_penalty=1.1,
     return_full_text=True,
     max_new_tokens=400,
-    f16_kv=True,
-
+    n_ctx=4096,
+    # n_gpu_layers=-1, # закоментировать при работе с CPU
+    num_return_sequences=1
 )
 
 llm_chain = PROMPT | llm | StrOutputParser()
