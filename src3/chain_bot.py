@@ -56,6 +56,7 @@ llm = LlamaCpp(
     return_full_text=True,
     max_new_tokens=400,
     f16_kv=True,
+
 )
 
 llm_chain = PROMPT | llm | StrOutputParser()
