@@ -10,7 +10,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Отключаем все предупреждения
 warnings.filterwarnings('ignore')
 
-with open('../data/in/pkl/cleared_documents.pkl', 'rb') as file:
+with open('data/in/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
 
 # Разделяем на чанки
@@ -19,25 +19,25 @@ source_chunks = splitter.split_documents(docs)
 
 # Создаем эмбеддинги
 model_id = 'sentence-transformers/all-MiniLM-L6-v2'
-model_kwargs = {'device': 'cpu'}
+model_kwargs = {'device': 'cuda'} # При работе с CPU заменить на {'device': 'cpu'}
 embeddings = HuggingFaceEmbeddings(
     model_name=model_id,
     model_kwargs=model_kwargs
 )
 
 # Кэширование
-cache_dir = '../cache'
+cache_dir = 'cache'
 memory = Memory(cache_dir)
 
 
 # Функция по созданию индекса FAISS
 @memory.cache
-def get_db(source_chunks, embeddings):
+def get_db():
     return FAISS.from_documents(source_chunks, embeddings)
 
 
 # Сохраняем индекс в переменную
-db = get_db(source_chunks, embeddings)
+db = get_db()
 
 # Сохраняем индекс в файл
-db.save_local('../data/faiss_index')
+db.save_local('data/faiss_index')

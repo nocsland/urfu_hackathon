@@ -17,7 +17,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Отключаем все предупреждения
 warnings.filterwarnings('ignore')
 
-with open('../data/in/pkl/cleared_documents.pkl', 'rb') as file:
+with open('data/in/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
 
 # Разделяем на чанки
@@ -26,24 +26,23 @@ source_chunks = splitter.split_documents(docs)
 
 # Создаем эмбеддинги
 model_id = 'sentence-transformers/all-MiniLM-L6-v2'
-model_kwargs = {'device': 'cpu'}
+model_kwargs = {'device': 'cuda'} # При работе с CPU заменить на {'device': 'cpu'}
 embeddings = HuggingFaceEmbeddings(
     model_name=model_id,
     model_kwargs=model_kwargs
 )
 
 # Кэширование
-cache_dir = '../cache'
+cache_dir = 'cache'
 memory = Memory(cache_dir)
 
 # Инициализируем ретриверы
 bm25_retriever = BM25Retriever.from_documents(source_chunks)
-bm25_retriever.k = 3
+bm25_retriever.k = 2
 faiss_vectorstore = FAISS.from_documents(source_chunks, embeddings)
-faiss_retriever = faiss_vectorstore.as_retriever(search_kwargs={"k": 3})
+faiss_retriever = faiss_vectorstore.as_retriever(search_kwargs={"k": 2})
 
 # Инициализируем ансамбль ретриверов
 ensemble_retriever = EnsembleRetriever(
     retrievers=[bm25_retriever, faiss_retriever], weights=[0.5, 0.5]
 )
-

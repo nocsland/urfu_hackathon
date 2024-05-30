@@ -7,29 +7,26 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
-from src.create_index import db
+from create_index import db
 
 # Отключаем все предупреждения
 warnings.filterwarnings('ignore')
 
 # Создаем ретривер для поиска документов по схожести
-retriever = db.as_retriever(search_type='similarity', search_kwargs={"k": 5})
+retriever = db.as_retriever(search_type='similarity', search_kwargs={"k": 3})
 
 # Создаем менеджер коллбэков для обработки событий в процессе генерации
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
-# Определяем правила для генерации ответов
-# system = """
-# You are a Knowledge Base Assistant. The user asks questions, you answer them using the context of the knowledge base.
-# Answer close in meaning to the original document. Answer in Russian
-# """
-
-system = """
-Ты помощник по базе знаний, пользователь задает вопрос, ты отвечаешь на него, 
-используя контекст из базы знаний. В качестве базы знаний у тебя документ со всеми материалами о внутренних 
-процессах и регламентах компании. В ответе описывай конкретные шаги и названия документов, ведущие к тому, чтобы 
-пользователь получил ответ на свой вопрос. 
-"""
+# Определяем правила для генерации ответа
+system = '''
+Ты помощник по базе знаний компании ПЭК. Пользователь задает вопрос, ты отвечаешь на него, используя контекст из базы знаний компании.
+Отвечай только на заданный пользователем вопрос. Не включай в ответ информацию, не относящуюся к вопросу.
+Отвечай на вопрос в виде пошагового плана, основываясь на документах с материалами о внутренних процессах и регламентах компании. 
+Предоставляй пользователю подробную информацию, чтобы он мог самостоятельно решить вопрос.
+В ответе пиши ответ на вопрос, а не только ссылки на документы.
+Описывай в ответе содержание документов отвечающих на вопрос пользователя.
+'''
 
 # Определяем шаблон запроса для использования в LLMChain
 prompt_template = f"""
@@ -47,11 +44,12 @@ PROMPT = PromptTemplate(
 
 # Инициализируем модель LlamaCpp с заданными параметрами
 llm = LlamaCpp(
-    model_path='../data/model/model-q4_K.gguf',  # Путь к модели
-    temperature=0.1,  # Температура для управления степенью случайности в ответах
+    model_path='data/model/saiga_mistral_7b.Q4_K_M.gguf',  # Путь к модели
+    temperature=0.2,  # Температура для управления степенью случайности в ответах
     max_tokens=2000,  # Максимальное количество токенов в ответе
     max_length=512,  # Максимальная длина текста (в символах)
-    top_p=0.95,  # Параметр для управления вероятностным выбором токенов
+    top_p=0.95,
+    top_k=50, 
     # callback_manager=callback_manager,  # Менеджер коллбэков
     f16_kv=True,
     n_batch=512,
@@ -60,15 +58,16 @@ llm = LlamaCpp(
     repetition_penalty=1.1,
     return_full_text=True,
     max_new_tokens=400,
-    n_ctx=4096
-
+    n_ctx=4096,
+    n_gpu_layers=-1, # закоментировать при работе с CPU
+    num_return_sequences=1
 )
 
 # Создаем объект LLMChain с использованием модели и шаблона запроса
 chain = LLMChain(prompt=PROMPT, llm=llm)
 
 # Формулируем вопрос
-question = 'Как быть если заказчик требует водителя с мед книжкой?'
+question = 'Доступна ли перевозка грузов к Киргизию?'
 
 # Создаем цепочки
 llm_chain = PROMPT | llm | StrOutputParser()

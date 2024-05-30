@@ -13,6 +13,4 @@ unstructured
 langchain-community
 langchain
 sentence-transformers
-chromadb
-langchainhub
 rank_bm25
