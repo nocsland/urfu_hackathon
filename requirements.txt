@@ -1,6 +1,6 @@
-spacy
-joblib
-torch
+spacy~=3.7.4
+joblib~=1.4.2
+torch~=2.3.0
 numpy
 tqdm
 transformers
@@ -11,6 +11,9 @@ dvc-gdrive
 sentencepiece
 unstructured
 langchain-community
-langchain
+langchain~=0.2.1
 sentence-transformers
-rank_bm25
+datasets
+llama-cpp-python
+python-telegram-bot
+python-dotenv~=1.0.1

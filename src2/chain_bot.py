@@ -1,5 +1,6 @@
 import warnings
 
+import torch
 from langchain.chains.llm import LLMChain
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
@@ -42,14 +43,20 @@ PROMPT = PromptTemplate(
     template=prompt_template, input_variables=['question', 'context']
 )
 
+# Определение устройства: CUDA если доступен, иначе CPU
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+# Определение количества слоев для использования на GPU
+n_gpu_layers = -1 if device == 'cuda' else 0  # -1 для максимального использования GPU, 0 для CPU
+
 # Инициализируем модель LlamaCpp с заданными параметрами
 llm = LlamaCpp(
-    model_path='data/model/saiga_mistral_7b.Q4_K_M.gguf',  # Путь к модели
+    model_path='../data/model/saiga_mistral_7b.Q4_K_M.gguf',  # Путь к модели
     temperature=0.2,  # Температура для управления степенью случайности в ответах
     max_tokens=2000,  # Максимальное количество токенов в ответе
     max_length=512,  # Максимальная длина текста (в символах)
     top_p=0.95,
-    top_k=50, 
+    top_k=40,
     # callback_manager=callback_manager,  # Менеджер коллбэков
     f16_kv=True,
     n_batch=512,
@@ -59,7 +66,7 @@ llm = LlamaCpp(
     return_full_text=True,
     max_new_tokens=400,
     n_ctx=4096,
-    n_gpu_layers=-1, # закоментировать при работе с CPU
+    n_gpu_layers=n_gpu_layers,  # -1 для максимального использования GPU, 0 для CPU
     num_return_sequences=1
 )
 
