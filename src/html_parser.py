@@ -10,7 +10,7 @@ from langchain_community.document_loaders import DirectoryLoader
 warnings.filterwarnings('ignore')
 
 # Загружаем исходные данные
-loader = DirectoryLoader('../data/html')
+loader = DirectoryLoader('data/html')
 docs = loader.load()
 
 # Очищаем исходный текст
@@ -30,12 +30,12 @@ for item in docs:
     item.page_content = cleaned_text
 
 # Запись списка объектов в файл
-with open('../data/pkl/cleared_documents.pkl', 'wb') as file:
+with open('data/pkl/cleared_documents.pkl', 'wb') as file:
     pickle.dump(docs, file)
 
 # Преобразование объектов в словари для сохранения в JSON
 docs_dicts = [item.__dict__ for item in docs]
 
 # Запись списка словарей в файл JSON
-with open('../data/json/cleared_documents.json', 'w', encoding='utf-8') as file:
+with open('data/json/cleared_documents.json', 'w', encoding='utf-8') as file:
     json.dump(docs_dicts, file, ensure_ascii=False, indent=4)
