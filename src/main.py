@@ -1,12 +1,12 @@
 import warnings
+
 import torch
-from langchain.chains.llm import LLMChain
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
-from langchain_community.vectorstores import FAISS
+
 from build_index import db
 
 # Отключаем все предупреждения
@@ -71,6 +71,7 @@ rag_chain = (
         {"context": retriever, "question": RunnablePassthrough()} | llm_chain
 )
 
+
 def get_answer(question):
     # Запускаем цепочку обработки вопроса и получаем ответ
     context_docs = retriever.get_relevant_documents(question)
@@ -86,6 +87,7 @@ def get_answer(question):
     # Формируем итоговый ответ с материалами
     answer_tmpl = f"""Ответ:{answer}\n\nМатериалы:\n{sources}"""
     return answer_tmpl
+
 
 # Пример использования функции
 if __name__ == "__main__":

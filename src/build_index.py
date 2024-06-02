@@ -37,7 +37,7 @@ def get_db():
         model_name=model_id,
         model_kwargs=model_kwargs
     )
-    
+
     return FAISS.from_documents(source_chunks, embeddings)
 
 
