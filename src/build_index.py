@@ -11,34 +11,33 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Отключаем все предупреждения
 warnings.filterwarnings('ignore')
 
-with open('../data/pkl/cleared_documents.pkl', 'rb') as file:
+with open('data/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
 
 # Разделяем на чанки
-splitter = RecursiveCharacterTextSplitter(chunk_size=2048, chunk_overlap=256)
+splitter = RecursiveCharacterTextSplitter(chunk_size=4096, chunk_overlap=256)
 source_chunks = splitter.split_documents(docs)
 
 # Создаем эмбеддинги
 # Определение устройства: CUDA если доступен, иначе CPU
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# Создаем эмбеддинги с учетом выбранного устройства
-model_id = 'intfloat/multilingual-e5-large'
-model_kwargs = {'device': device}
-
-embeddings = HuggingFaceEmbeddings(
-    model_name=model_id,
-    model_kwargs=model_kwargs
-)
-
-# Кэширование
+# Кэширование с отключением отладочной информации
 cache_dir = 'cache'
-memory = Memory(cache_dir)
+memory = Memory(cache_dir, verbose=0)
 
 
-# Функция по созданию индекса FAISS
+# Функция по созданию индекса FAISS с использованием всех доступных видеокарт
 @memory.cache
 def get_db():
+    # Создаем эмбеддинги с учетом всех доступных видеокарт
+    model_id = 'intfloat/multilingual-e5-large'
+    model_kwargs = {'device': device}
+    embeddings = HuggingFaceEmbeddings(
+        model_name=model_id,
+        model_kwargs=model_kwargs
+    )
+    
     return FAISS.from_documents(source_chunks, embeddings)
 
 
@@ -46,4 +45,4 @@ def get_db():
 db = get_db()
 
 # Сохраняем индекс в файл
-db.save_local('../data/faiss_index')
+db.save_local('data/faiss_index')
