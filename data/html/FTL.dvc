@@ -1,0 +1,6 @@
+outs:
+- md5: 5144686d036150d498cd241f3d0eafce.dir
+  size: 1263668
+  nfiles: 19
+  hash: md5
+  path: FTL

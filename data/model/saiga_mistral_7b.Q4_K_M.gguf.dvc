@@ -1,0 +1,5 @@
+outs:
+- md5: 327d7c28e66b89a5fe59a4df58f0ecb1
+  size: 4368450432
+  hash: md5
+  path: saiga_mistral_7b.Q4_K_M.gguf
