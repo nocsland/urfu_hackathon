@@ -15,7 +15,7 @@ with open('data/pkl/cleared_documents.pkl', 'rb') as file:
     docs = pickle.load(file)
 
 # Разделяем на чанки
-splitter = RecursiveCharacterTextSplitter(chunk_size=4096, chunk_overlap=256)
+splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=256)
 source_chunks = splitter.split_documents(docs)
 
 # Создаем эмбеддинги
@@ -27,7 +27,7 @@ cache_dir = 'cache'
 memory = Memory(cache_dir, verbose=0)
 
 
-# Функция по созданию индекса FAISS с использованием всех доступных видеокарт
+# Функция по созданию индекса FAISS с использованием доступных видеокарт
 @memory.cache
 def get_db():
     # Создаем эмбеддинги с учетом всех доступных видеокарт
