@@ -8,7 +8,7 @@ while True:
     logger.debug('Start application ...')
 
     logger.debug('Start tg_bot.py ...')
-    subprocess.call(['python', 'tg_bot.py'])
+    subprocess.call(['python', 'src/tg_bot.py'])
 
     time.sleep(0.1)
 

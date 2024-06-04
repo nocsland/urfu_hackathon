@@ -14,4 +14,4 @@ cp ../../urfu_hackathon/config/config-user.yaml .
 cd ..
 mv one_click.py one_click_.py
 mv one_click_old.py one_click.py
-./start_linux.sh --listen --model openchat_3.5.Q8_0 --listen-port 7860
+cd ..
