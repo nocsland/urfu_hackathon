@@ -6,6 +6,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
 
 
+dirname = os.path.dirname(os.path.dirname(__file__))
+
 # Парсинг страницы в текст и удаление лишних символов
 def html_to_text(html_content):
     soup = BeautifulSoup(html_content, "lxml")
@@ -36,7 +38,7 @@ def html_to_text(html_content):
 
 # Парсинг всех html документов и разбитие на чанки
 def parse_html():
-    dir = '../data/html'
+    dir = os.path.join(dirname, 'data/html')
     source_chunks = []
     splitter = CharacterTextSplitter(separator=" ",  chunk_size=4096, chunk_overlap=2048)
 
@@ -55,7 +57,7 @@ def parse_html():
 # Парсинг страниц и сохранение чанков
 if __name__ == '__main__':
     source_chunks = parse_html()
-    dirname = os.path.dirname(os.path.dirname(__file__))
+    
     filename = os.path.join(dirname, 'data/pkl/source_chunks.pkl')
     with open(filename, 'wb') as file:
         pickle.dump(source_chunks, file)
