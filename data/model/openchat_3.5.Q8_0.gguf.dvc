@@ -1,0 +1,5 @@
+outs:
+- md5: 6881c4cc2e4fcd10d2245d1fd9195d38
+  size: 7695874752
+  hash: md5
+  path: openchat_3.5.Q8_0.gguf
