@@ -1,10 +1,13 @@
 import re
+import os
 import openai
 import pickle
 
 
 # Загружаем векторную базу
-with open('../data/pkl/index_db.pkl', 'rb') as file:
+dirname = os.path.dirname(os.path.dirname(__file__))
+filename_index_db = os.path.join(dirname, 'data/pkl/index_db.pkl')
+with open(filename_index_db, 'rb') as file:
     index_db = pickle.load(file)
 
 

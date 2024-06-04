@@ -55,7 +55,9 @@ def parse_html():
 # Парсинг страниц и сохранение чанков
 if __name__ == '__main__':
     source_chunks = parse_html()
-    with open('../data/pkl/source_chunks.pkl', 'wb') as file:
+    dirname = os.path.dirname(os.path.dirname(__file__))
+    filename = os.path.join(dirname, 'data/pkl/source_chunks.pkl')
+    with open(filename, 'wb') as file:
         pickle.dump(source_chunks, file)
     print('Чанки созданы и сохранены')
     

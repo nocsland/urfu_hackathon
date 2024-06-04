@@ -31,13 +31,17 @@ def create_index_db(source_chunks):
 
 
 # Создание и сохранение векторной базы
-if __name__ == '__main__':    
-    with open('../data/pkl/source_chunks.pkl', 'rb') as file:
+if __name__ == '__main__':
+    dirname = os.path.dirname(os.path.dirname(__file__))
+
+    filename_source_chunks = os.path.join(dirname, 'data/pkl/source_chunks.pkl')
+    with open(filename_source_chunks, 'rb') as file:
         source_chunks = pickle.load(file)
     print('Чанки загружены')
 
     index_db = create_index_db(source_chunks)
 
+    filename_index_db = os.path.join(dirname, 'data/pkl/index_db.pkl')
     with open('../data/pkl/index_db.pkl', 'wb') as file:
         pickle.dump(index_db, file)    
     print('Векторная база создана и сохранена')
