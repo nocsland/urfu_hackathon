@@ -18,6 +18,12 @@ source venv/bin/activate
 # Установка зависимостей
 pip install -r requirements.txt
 
+# Загрузка данных
+dvc pull --force
+
+# Установка spaCy
+python -m spacy download ru_core_news_sm
+
 # Парсер
 echo "Запуск парсера..."
 python src/html_parser.py
