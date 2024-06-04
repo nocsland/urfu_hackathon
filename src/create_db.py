@@ -42,6 +42,6 @@ if __name__ == '__main__':
     index_db = create_index_db(source_chunks)
 
     filename_index_db = os.path.join(dirname, 'data/pkl/index_db.pkl')
-    with open('../data/pkl/index_db.pkl', 'wb') as file:
+    with open(filename_index_db, 'wb') as file:
         pickle.dump(index_db, file)    
     print('Векторная база создана и сохранена')
