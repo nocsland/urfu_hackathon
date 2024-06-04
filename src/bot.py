@@ -1,11 +1,12 @@
+import asyncio
 import os
 import subprocess
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
+
 from dotenv import load_dotenv
+from chains import get_answer
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, MessageHandler, CommandHandler, filters, CallbackContext
-from main import get_answer
 
 # Загрузка переменных окружения из .env файла
 load_dotenv()
@@ -15,6 +16,7 @@ INDEX_PASSWORD = os.getenv('INDEX_PASSWORD')  # Чтение пароля из �
 
 executor = ThreadPoolExecutor()
 awaiting_password = False  # Флаг для ожидания ввода пароля
+
 
 # Функция для отправки клавиатуры "Загрузка файла" и "Переиндексация"
 async def send_file_upload_keyboard(update: Update):
@@ -27,6 +29,7 @@ async def send_file_upload_keyboard(update: Update):
     # Отправляем клавиатуру пользователю
     await update.message.reply_text("Выберите действие:", reply_markup=markup)
 
+
 # Функция для выполнения bash-команды
 def execute_bash_command(command):
     try:
@@ -36,9 +39,11 @@ def execute_bash_command(command):
     except Exception as e:
         return str(e)
 
+
 # Обработчик команды /start
 async def start(update: Update, context: CallbackContext):
     await send_file_upload_keyboard(update)
+
 
 # Обработчик сообщений от пользователей
 async def handle_message(update: Update, context: CallbackContext):
@@ -82,34 +87,38 @@ async def handle_message(update: Update, context: CallbackContext):
                     if attempt < max_retries - 1:
                         continue  # Пытаемся снова
                     else:
-                        await update.message.reply_text("Произошла ошибка при обработке вашего запроса. Попробуйте позже.")
+                        await update.message.reply_text(
+                            "Произошла ошибка при обработке вашего запроса. Попробуйте позже.")
+
 
 # Функция для выполнения переиндексации в фоновом режиме
 def run_reindex_sync():
     script1_command = "python3 src/html_parser.py"
     script2_command = "python3 src/build_index.py"
-    
+
     print(f"Выполнение: {script1_command}")
     script1_result = execute_bash_command(script1_command)
     if "ошибка" in script1_result.lower():
         script1_result = f"Ошибка при выполнении парсинга файлов: {script1_result}"
     else:
         script1_result = f"Парсинг файлов успешно завершен: {script1_result}"
-    
+
     print(f"Выполнение: {script2_command}")
     script2_result = execute_bash_command(script2_command)
     if "ошибка" in script2_result.lower():
         script2_result = f"Ошибка при создании индекса: {script2_result}"
     else:
         script2_result = f"Создание индекса успешно завершено: {script2_result}"
-    
+
     return script1_result, script2_result
+
 
 async def run_reindex(update: Update):
     loop = asyncio.get_event_loop()
     script1_result, script2_result = await loop.run_in_executor(executor, run_reindex_sync)
     await update.message.reply_text(f"Результат выполнения первого скрипта:\n{script1_result}")
     await update.message.reply_text(f"Результат выполнения второго скрипта:\n{script2_result}")
+
 
 # Обработчик загрузки файлов
 async def handle_document(update: Update, context: CallbackContext):
@@ -130,9 +139,11 @@ async def handle_document(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text('Пожалуйста, отправьте HTML-файл.')
 
+
 # Обработчик ошибок
 async def error(update: Update, context: CallbackContext):
     print(context.error)
+
 
 if __name__ == "__main__":
     app = Application.builder().token(TOKEN).build()

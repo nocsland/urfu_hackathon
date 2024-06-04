@@ -5,8 +5,8 @@ numpy
 tqdm
 transformers
 bs4
-# faiss-cpu
-faiss-gpu
+faiss-cpu
+# faiss-gpu
 dvc
 dvc-gdrive
 sentencepiece
