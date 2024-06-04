@@ -8,6 +8,5 @@ sentence_transformers
 openai
 tools
 beautifulsoup4
-warnings
 dvc
 dvc-gdrive

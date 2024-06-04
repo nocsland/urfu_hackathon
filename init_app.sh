@@ -9,14 +9,14 @@ fi
 # Проверяем наличие виртуального окружения
 if [ ! -d "venv" ]; then
     echo "Создание виртуального окружения..."
-    python -m venv venv
+    python3 -m venv venv
 fi
 
 # Активация виртуального окружения
 source venv/bin/activate
 
 # Установка зависимостей
-pip install -r requirements.txt
+pip install -q -r requirements.txt
 
 # Инициализация приложениеЮ создание чанков и векторной базы
 echo "Запуск инициализации..."
