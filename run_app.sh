@@ -15,9 +15,6 @@ fi
 # Активация виртуального окружения
 source venv/bin/activate
 
-# Установка зависимостей
-pip install -r requirements.txt
-
 # Запуск бота
 echo "Запуск бота..."
 python src/tg_bot.py
