@@ -18,6 +18,19 @@ source venv/bin/activate
 # Установка зависимостей
 pip install -r requirements.txt
 
+# Проверяем наличие CUDA
+if [ -d /usr/local/cuda ]; then
+  echo "CUDA detected!"
+  export CMAKE_ARGS="-DLLAMA_CUBLAS=on"
+  export FORCE_CMAKE=1
+  pip install --upgrade --force-reinstall llama-cpp-python --no-cache-dir
+  pip install --upgrade --force-reinstall faiss-gpu --no-cache-dir
+else
+  echo "CUDA not detected!"
+  pip install llama-cpp-python
+  pip install faiss-cpu
+fi
+
 # Загрузка данных
 dvc pull --force
 

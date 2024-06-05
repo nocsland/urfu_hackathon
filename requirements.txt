@@ -5,8 +5,6 @@ numpy
 tqdm
 transformers
 bs4
-faiss-cpu
-# faiss-gpu
 dvc
 dvc-gdrive
 sentencepiece
@@ -14,7 +12,11 @@ unstructured
 langchain-community
 langchain
 sentence-transformers
-llama-cpp-python
 datasets
 python-telegram-bot
 python-dotenv
+
+# В случае кастомного развертывания необходимо раскомментировать. Настройка и установка выполняется в run_app.sh
+# faiss-cpu
+# faiss-gpu
+# llama-cpp-python
