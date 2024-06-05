@@ -10,14 +10,17 @@ fi
 if [ ! -d "venv" ]; then
     echo "Создание виртуального окружения..."
     python -m venv venv
+    # Активация виртуального окружения
+    source venv/bin/activate
+    # Установка зависимостей
+    echo "Установка зависимостей..."
+    pip install -r requirements.txt
+    # Деактивация виртуального окружения
+    deactivate
 fi
 
 # Активация виртуального окружения
 source venv/bin/activate
-
-# Установка зависимостей
-echo "Установка зависимостей..."
-pip install -r requirements.txt
 
 # Запуск бота
 echo "Запуск бота..."

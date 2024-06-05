@@ -10,7 +10,8 @@ load_dotenv()
 TOKEN = os.environ.get("TOKEN")
 
 # директория сохранения загруженных файлов
-DIR = '../data/html/'
+dirname = os.path.dirname(os.path.dirname(__file__))
+DIR = os.path.join(dirname, 'data/html/')
 
 # функция команды /start
 async def start(update, context):

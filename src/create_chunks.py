@@ -40,7 +40,7 @@ def html_to_text(html_content):
 def parse_html():
     dir = os.path.join(dirname, 'data/html')
     source_chunks = []
-    splitter = CharacterTextSplitter(separator=" ",  chunk_size=4096, chunk_overlap=2048)
+    splitter = CharacterTextSplitter(separator=" ",  chunk_size=2048, chunk_overlap=1024)
 
     for root, dirs, files in os.walk(dir):
         for file in files:

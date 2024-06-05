@@ -14,4 +14,3 @@ cd ..
 cp ../urfu_hackathon/config/settings.yaml .
 mv one_click.py one_click_.py
 mv one_click_old.py one_click.py
-cd ..
