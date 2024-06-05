@@ -1,7 +1,7 @@
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 from dotenv import load_dotenv
 import os
-import rag_lm
+import rag_llm
 
 # возьмем переменные окружения из .env
 load_dotenv()
@@ -35,7 +35,7 @@ async def text(update, context):
 
     chat_type = update.message.chat.type
 
-    reply_text, gpt_message_content = rag_lm.answer_user_question(topic)
+    reply_text, gpt_message_content = rag_llm.answer_user_question(topic)
 
 
     await update.message.reply_text(f'{reply_text}')

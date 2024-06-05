@@ -1,6 +1,32 @@
 # Как собрать и запустить проект
 
-## Шаг 1: Клонирование репозитория
+## Шаг 0: Установка Python 3.9
+
+Если у вас отсутствует Python 3.9, его можно установить через Miniconda
+
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+~/miniconda3/bin/conda init bash
+```
+
+Создаем окружение с Python 3.9 и активируем
+
+```bash
+conda create --name py39 python=3.9
+conda activate py39
+```
+
+## Шаг 1: Создайте папку проекта
+
+```bash
+mkdir pekgpt
+cd pekgpt
+```
+
+## Шаг 2: Клонирование репозитория
 
 Клонируйте репозиторий на свой локальный компьютер и перейдите в ветку webui:
 
@@ -8,7 +34,6 @@
 git clone https://github.com/nocsland/urfu_hackathon.git
 cd urfu_hackathon
 git checkout webui
-chmod 771 *.sh
 ```
 
 Измените права на выполняемые скрипты
@@ -23,18 +48,20 @@ chmod 771 *.sh
 dvc pull
 ```
 
-## Шаг 2: Настройка окружения
+## Шаг 3: Настройка окружения
 
 Создайте файл `.env` в директории urfu_hackathon/src проекта и добавьте в него следующие переменные:
 
-```plaintext
-TOKEN=your_telegram_bot_token
-LL_MODEL=your_large_language_model_identifier
+```shell
+LL_MODEL=your_large_language_model_identifier > scr/.env
+TOKEN=your_telegram_bot_token >> scr/.env
 ```
 
-## Шаг 3: Установка webui
+Указываемая модель используется для создания эмбедингов, рекомендуется 'intfloat/multilingual-e5-large'
 
-Запустите установку Text generation web UI
+## Шаг 4: Установка webui
+
+Перейдите в корень проекта (директорию pekgpt) и запустите установку Text generation web UI
 
 ```shell
 ./urfu_hackathon/install_webui.sh
@@ -42,10 +69,10 @@ LL_MODEL=your_large_language_model_identifier
 
 ## Шаг 4: Установка зависимостей
 
-Для начала работы с проектом вам понадобится Python версии ***3.9*** или выше. Инициализруйте приложение установив все необходимые зависимости и создав векторную базу, выполнив следующую команду:
+Запустите чат-бота, используя следующую команду:
 
 ```shell
-./urfu_hackathon/init_app.sh
+./urfu_hackathon/run_app.sh
 ```
 
 ## Шаг 5: Запуск webui
@@ -54,14 +81,6 @@ LL_MODEL=your_large_language_model_identifier
 
 ```shell
 ./text-generation-webui/start_linux.sh --listen --model models/openchat_3.5.Q8_0.gguf --listen-port 7860
-```
-
-## Шаг 6: Запуск бота
-
-Запустите чат-бота, используя следующую команду:
-
-```shell
-./urfu_hackathon/run_app.sh
 ```
 
 Теперь бот готов к работе!

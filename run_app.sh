@@ -8,16 +8,20 @@ fi
 
 # Проверяем наличие виртуального окружения
 if [ ! -d "venv" ]; then
-    echo "Необходимо сначало инициализировать приложение, запустите init_app.sh"
-    exit 1
+    echo "Создание виртуального окружения..."
+    python -m venv venv
 fi
 
 # Активация виртуального окружения
 source venv/bin/activate
 
+# Установка зависимостей
+echo "Установка зависимостей..."
+pip install -r requirements.txt
+
 # Запуск бота
 echo "Запуск бота..."
-python src/tg_bot.py
+python src/start_app.py
 
 # Деактивация виртуального окружения
 deactivate

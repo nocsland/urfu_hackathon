@@ -9,14 +9,14 @@ openchat_3.5.Q8_0.gguf$:
   no_mul_mat_q: false
   n_gpu_layers: 256
   tensor_split: ''
-  n_ctx: 18432
+  n_ctx: 20480
   compress_pos_emb: 1
   alpha_value: 1
   rope_freq_base: 0
   numa: false
   no_offload_kqv: false
   row_split: false
-  tensorcores: false
+  tensorcores: yes
   flash-attn: false
   streaming_llm: false
   attention_sink_size: 5
