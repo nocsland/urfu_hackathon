@@ -16,7 +16,7 @@ DIR = os.path.join(dirname, 'data/html/')
 
 # функция команды /start
 async def start(update, context):
-    keyboard = [['/start', '/restart', 'Начать', 'Рестарт', 'Загрузить файл']]
+    keyboard = [['Начать', 'Перезапуск сервера', 'Загрузить файл']]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
     await update.message.reply_text(
@@ -28,7 +28,7 @@ async def start(update, context):
 async def text(update, context):
     if update.message.text == "Начать":
         reply_text = 'Для начала работы выполните команду /start'
-    elif update.message.text == "Рестарт":
+    elif update.message.text == "Перезапуск сервера":
         reply_text = 'Для перезапуска сервера выполните команду /restart'
     elif update.message.text == "Загрузить файл":
         reply_text = 'Чтобы загрузить файл, просто перетащите его в диалог и нажмите отправить'
