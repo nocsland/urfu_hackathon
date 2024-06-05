@@ -37,7 +37,7 @@ dvc pull --force
 # Установка spaCy
 python -m spacy download ru_core_news_sm
 
-# Парсер
+# Запуск парсера
 echo "Запуск парсера..."
 python src/html_parser.py
 

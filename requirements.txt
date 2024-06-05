@@ -9,12 +9,13 @@ dvc
 dvc-gdrive
 sentencepiece
 unstructured
-langchain-community
+langchain-community==0.2.1
 langchain
 sentence-transformers
 datasets
 python-telegram-bot
 python-dotenv
+langchain-core==0.2.1
 
 # В случае кастомного развертывания необходимо раскомментировать. Настройка и установка выполняется в run_app.sh
 # faiss-cpu
