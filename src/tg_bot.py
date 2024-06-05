@@ -1,4 +1,5 @@
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
+from telegram import ReplyKeyboardMarkup
 from dotenv import load_dotenv
 import os
 import rag_llm
@@ -15,28 +16,37 @@ DIR = os.path.join(dirname, 'data/html/')
 
 # функция команды /start
 async def start(update, context):
+    keyboard = [['/start', '/restart', 'Начать', 'Рестарт', 'Загрузить файл']]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+
     await update.message.reply_text(
-        'Привет! Это бот пекGPT.'
-        'Готов к работе.'
-        'Задайте ваш вопрос.'
+        'Привет! Это бот пекGPT.\nГотов к работе.\nЗадайте ваш вопрос.', 
+        reply_markup=reply_markup
     )
 
 # функция для текстовых сообщений
 async def text(update, context):
-    # использование update
-    print('-------------------')
-    # print(f'update: {update}')
-    print(f'date: {update.message.date}')
-    print(f'id message: {update.message.message_id}')
-    print(f'name: {update.message.from_user.first_name}')
-    print(f'user.id: {update.message.from_user.id}')
+    if update.message.text == "Начать":
+        reply_text = 'Для начала работы выполните команду /start'
+    elif update.message.text == "Рестарт":
+        reply_text = 'Для перезапуска сервера выполните команду /restart'
+    elif update.message.text == "Загрузить файл":
+        reply_text = 'Чтобы загрузить файл, просто перетащите его в диалог и нажмите отправить'
+    else:
+        # использование update
+        print('-------------------')
+        # print(f'update: {update}')
+        print(f'date: {update.message.date}')
+        print(f'id message: {update.message.message_id}')
+        print(f'name: {update.message.from_user.first_name}')
+        print(f'user.id: {update.message.from_user.id}')
 
-    topic = update.message.text
-    print(f'text: {topic}')
+        topic = update.message.text
+        print(f'text: {topic}')
 
-    chat_type = update.message.chat.type
+        chat_type = update.message.chat.type
 
-    reply_text, gpt_message_content = rag_llm.answer_user_question(topic)
+        reply_text, gpt_message_content = rag_llm.answer_user_question(topic)
 
 
     await update.message.reply_text(f'{reply_text}')

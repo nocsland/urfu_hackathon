@@ -75,7 +75,7 @@ TOKEN=your_telegram_bot_token
 
 ## Шаг 4: Установка и запуск webui
 
-Перейдите в корень проекта (директорию pekgpt) и запустите установку Text generation web UI
+Запустите установку Text generation web UI
 
 ```shell
 ./install_webui.sh
