@@ -20,7 +20,7 @@ async def start(update, context):
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
     await update.message.reply_text(
-        'Привет! Это бот пекGPT.\nГотов к работе.\nЗадайте ваш вопрос.', 
+        'Привет! Это бот пекGPT. Я Готов к работе.\nЯ помогу найти ответ по внутренней документации, при том указав источники информации.\nЗадайте ваш вопрос.', 
         reply_markup=reply_markup
     )
 
