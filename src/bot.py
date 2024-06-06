@@ -4,9 +4,10 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
-from chains import get_answer
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, MessageHandler, CommandHandler, filters, CallbackContext
+
+from chains import get_answer
 
 # Загрузка переменных окружения из .env файла
 load_dotenv()
@@ -18,15 +19,12 @@ executor = ThreadPoolExecutor()
 awaiting_password = False  # Флаг для ожидания ввода пароля
 
 
-# Функция для отправки клавиатуры "Загрузка файла" и "Переиндексация"
+# Функция для отправки клавиатуры "Загрузка файлов" и "Обновление базы"
 async def send_file_upload_keyboard(update: Update):
-    # Создаем кнопки "Загрузка файла" и "Переиндексация"
-    upload_button = KeyboardButton("Загрузка файла")
-    reindex_button = KeyboardButton("Переиндексация")
-    # Создаем клавиатуру и добавляем на нее кнопки
+    upload_button = KeyboardButton("Загрузка файлов")
+    reindex_button = KeyboardButton("Обновление базы")
     reply_keyboard = [[upload_button, reindex_button]]
-    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-    # Отправляем клавиатуру пользователю
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True)
     await update.message.reply_text("Выберите действие:", reply_markup=markup)
 
 
@@ -46,6 +44,9 @@ async def start(update: Update, context: CallbackContext):
 
 
 # Обработчик сообщений от пользователей
+TEXT_SEND_HTML = 'Пожалуйста, отправьте HTML-файлы.'
+
+
 async def handle_message(update: Update, context: CallbackContext):
     global awaiting_password
     text = update.message.text
@@ -56,20 +57,20 @@ async def handle_message(update: Update, context: CallbackContext):
         awaiting_password = False
         if text == INDEX_PASSWORD:
             if context.user_data.get('operation') == 'upload':
-                # Загрузка файла
-                await update.message.reply_text("Пожалуйста, отправьте HTML-файл.")
+                # Загрузка файлов
+                await update.message.reply_text(TEXT_SEND_HTML)
             elif context.user_data.get('operation') == 'reindex':
-                # Запуск переиндексации
-                await update.message.reply_text("Запуск переиндексации...")
+                # Запуск обновления базы
+                await update.message.reply_text("Запуск обновления базы...")
                 asyncio.create_task(run_reindex(update))
         else:
             await update.message.reply_text("Неверный пароль. Доступ запрещен.")
     else:
-        # Проверяем, если текст соответствует кнопке "Загрузка файла" или "Переиндексация"
-        if text == "Загрузка файла":
+        # Проверяем, если текст соответствует кнопке "Загрузка файлов" или "Обновление базы"
+        if text == "Загрузка файлов":
             context.user_data['operation'] = 'upload'
-            await update.message.reply_text("Пожалуйста, отправьте HTML-файл.")
-        elif text == "Переиндексация":
+            await update.message.reply_text(TEXT_SEND_HTML)
+        elif text == "Обновление базы":
             context.user_data['operation'] = 'reindex'
             awaiting_password = True
             await update.message.reply_text("Введите пароль для выполнения операции:")
@@ -99,16 +100,16 @@ def run_reindex_sync():
     print(f"Выполнение: {script1_command}")
     script1_result = execute_bash_command(script1_command)
     if "ошибка" in script1_result.lower():
-        script1_result = f"Ошибка при выполнении парсинга файлов: {script1_result}"
+        script1_result = f"Ошибка при выполнении чтения файлов: {script1_result}"
     else:
-        script1_result = f"Парсинг файлов успешно завершен: {script1_result}"
+        script1_result = f"Чтение файлов успешно завершено: {script1_result}"
 
     print(f"Выполнение: {script2_command}")
     script2_result = execute_bash_command(script2_command)
     if "ошибка" in script2_result.lower():
-        script2_result = f"Ошибка при создании индекса: {script2_result}"
+        script2_result = f"Ошибка при индексации: {script2_result}"
     else:
-        script2_result = f"Создание индекса успешно завершено: {script2_result}"
+        script2_result = f"Индексация успешно завершена: {script2_result}"
 
     return script1_result, script2_result
 
@@ -116,8 +117,8 @@ def run_reindex_sync():
 async def run_reindex(update: Update):
     loop = asyncio.get_event_loop()
     script1_result, script2_result = await loop.run_in_executor(executor, run_reindex_sync)
-    await update.message.reply_text(f"Результат выполнения первого скрипта:\n{script1_result}")
-    await update.message.reply_text(f"Результат выполнения второго скрипта:\n{script2_result}")
+    await update.message.reply_text(f"Обновление базы 1 из 2:\n{script1_result}")
+    await update.message.reply_text(f"Обновление базы 2 из 2:\n{script2_result}")
 
 
 # Обработчик загрузки файлов
@@ -137,7 +138,7 @@ async def handle_document(update: Update, context: CallbackContext):
             f.write(file_bytes)  # Сохраняем файл на сервере
         await update.message.reply_text(f'Файл сохранен как {file.file_name}')
     else:
-        await update.message.reply_text('Пожалуйста, отправьте HTML-файл.')
+        await update.message.reply_text(TEXT_SEND_HTML)
 
 
 # Обработчик ошибок
