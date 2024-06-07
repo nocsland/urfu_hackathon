@@ -84,10 +84,18 @@ TOKEN=your_telegram_bot_token
 Запустите webui используя следующую команду:
 
 ```shell
-./start_linux.sh --listen --model models/openchat_3.5.Q8_0.gguf --listen-port 7860
+~/pekgpt/text-generation-webui/start_linux.sh --listen --model models/openchat_3.5.Q8_0.gguf --listen-port 7860
 ```
 
+В случае если вы используете другую видеокарту, рекомендуется поправить конфиг в webui во вкладке model учитывая доступные ресуры GPU
+
 ## Шаг 4: Установка зависимостей и запуск бота
+
+Активируйте Python 3.9, если у вас он не по умолчанию
+
+```bash
+conda activate py39
+```
 
 Запустите чат-бота в отдельной консоли, используя следующую команду:
 
