@@ -1,5 +1,5 @@
 outs:
-- md5: 4c5c8062ff2f45c3049581bae6c8f3ba
-  size: 18964964
+- md5: d832509a2f19854c421c6b9a2e720c7f
+  size: 18962465
   hash: md5
   path: cleared_documents.pkl
