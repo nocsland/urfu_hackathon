@@ -1,0 +1,5 @@
+outs:
+- md5: 027e84620f78ff2e32f335381f263d7e
+  size: 7695874784
+  hash: md5
+  path: model-q8_0.gguf
