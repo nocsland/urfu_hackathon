@@ -162,4 +162,4 @@ cython_debug/
 /data/faiss_index/index.pkl
 /data/faiss_index/index.faiss
 /data/in/pkl/documents.pkl
-*.gguf
+.gguf

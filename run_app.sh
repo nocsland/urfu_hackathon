@@ -31,6 +31,17 @@ else
   pip install faiss-cpu
 fi
 
+# Проверяем, существует ли файл модели
+if [ ! -f data/model/model-q8_0.gguf ]; then
+  # Создаем директорию, если ее нет
+  mkdir -p data/model
+
+  # Скачиваем файл в указанную директорию
+  wget -P data/model https://huggingface.co/IlyaGusev/saiga_mistral_7b_gguf/resolve/main/model-q8_0.gguf
+else
+  echo "Файл модели уже существует."
+fi
+
 # Загрузка данных
 dvc pull --force
 
